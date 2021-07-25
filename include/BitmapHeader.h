@@ -5,14 +5,14 @@
 
 #pragma pack(2)
 
-namespace BitmapHeader {
+namespace bitmap {
 
-struct BitmapHeader {
-    char header[2] {'B', 'M'};
-    int32_t fileSize;
-    int32_t reserved{0};
-    int32_t offset;
-};
+    struct BitmapHeader {
+        char header[2] {'B', 'M'};
+        int32_t fileSize;
+        int32_t reserved{0};
+        int32_t offset;
+    };
     
 }
 
