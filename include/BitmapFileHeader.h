@@ -1,5 +1,5 @@
-#ifndef BITMAP_HEADER_H
-#define BITMAP_HEADER_H
+#ifndef BITMAP_HEADER_H_
+#define BITMAP_HEADER_H_
 
 #include <cstdint>
 
@@ -7,7 +7,7 @@
 
 namespace bitmap {
 
-    struct BitmapHeader {
+    struct BitmapFileHeader {
         char header[2] {'B', 'M'};
         int32_t fileSize;
         int32_t reserved{0};

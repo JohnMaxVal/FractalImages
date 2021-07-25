@@ -1,10 +1,14 @@
 #include <iostream>
-#include "BitmapHeader.h"
-#include "BitmapInfoHeader.h"
+#include "Bitmap.h"
 
 using namespace bitmap;
 
-int main(int argc, char **argv) {
-    
+int main() {
+    Bitmap bmp(800, 600);
+
+    bmp.write("test.bmp");
+
+    std::cout << "Finished" << std::endl;
+
     return 0;
 }
