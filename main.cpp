@@ -1,64 +1,23 @@
 #include <iostream>
-#include <math.h>
-#include "Bitmap.h"
-#include "Mandelbrot.h"
-#include "ZoomList.h"
-
-using namespace bitmap;
-using namespace mandelbrot;
-using namespace zoom;
+#include "FractalCreator.h"
 
 static const int WIDTH = 800;
 static const int HEIGHT = 600;
 
+using namespace bitmap;
+
 int main() {
-    Bitmap bmp(WIDTH, HEIGHT);
 
-    std::unique_ptr<int[]> histogram(new int[Mandelbrot::MAX_ITERATIONS]{0});
-    std::unique_ptr<int[]> fractal(new int[WIDTH * HEIGHT] {0});
+    FractalCreator fc(WIDTH, HEIGHT);
 
-    ZoomList zoomList(WIDTH, HEIGHT);
-    zoomList.add(Zoom(WIDTH/2, HEIGHT/2, 4.0/WIDTH));
+    fc.addZoom(Zoom(295, HEIGHT - 202, 0.1));
+    fc.addZoom(Zoom(312, HEIGHT - 304, 0.01));
 
-    for(int y = 0; y < HEIGHT; ++y) {
-        for(int x = 0; x < WIDTH; ++x) {
-            std::pair<double, double> coords = zoomList.zooming(x, y);
+    fc.calculateIteration();
+    fc.calculateTotalIterations();
+    fc.drawFractal();
 
-            int iterations = Mandelbrot::getIterations(coords.first, coords.second);
-
-            fractal[y * WIDTH + x] = iterations;
-
-            if(iterations != Mandelbrot::MAX_ITERATIONS)
-                histogram[iterations]++;
-        }
-    }
-
-    int total = 0;
-    for(int i = 0; i < Mandelbrot::MAX_ITERATIONS; ++i)
-        total += histogram[i];
-
-     for(int y = 0; y < HEIGHT; ++y) {
-        for(int x = 0; x < WIDTH; ++x) {
-            uint8_t red = 0;
-            uint8_t green = 0;
-            uint8_t blue = 0;
-
-            int iterations = fractal[y * WIDTH + x];
-
-            if(iterations != Mandelbrot::MAX_ITERATIONS) {
-                double hue = 0.0;
-                for(int i = 0; i <= iterations; ++i) {
-                    hue += ((double)histogram[i]) / total;
-                }
-
-                green = std::pow(255, hue);
-            }
-
-            bmp.setPixel(x, y, red, green, blue);
-        }
-     }
-
-    bmp.write("test.bmp");
+    fc.writeBitmap("test.bmp");
 
     std::cout << "Finished" << std::endl;
 
