@@ -16,8 +16,8 @@ int main() {
     fc.addRange(0.5, RGB(255, 255, 0));
     fc.addRange(1.0, RGB(255, 255, 255));
 
-    fc.addZoom(Zoom(295, 202, 0.1));
-    fc.addZoom(Zoom(312, 304, 0.01));
+    fc.addZoom(Zoom(319, 183, 0.1));
+    fc.addZoom(Zoom(425, 282, 0.01));
 
     fc.run("test.bmp");
 

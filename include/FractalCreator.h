@@ -42,6 +42,7 @@ namespace bitmap {
             void calculateRangeTotals();
             void drawFractal();
             void writeBitmap(std::string name);
+            int getRange(int iterations) const;
     };
 
 }
