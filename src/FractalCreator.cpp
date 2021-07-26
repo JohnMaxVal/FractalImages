@@ -2,14 +2,13 @@
 
 namespace bitmap {
 
-    void FractalCreator::run(std::string name) {
-        addZoom(Zoom(295, m_height - 202, 0.1));
-        addZoom(Zoom(312, m_height - 304, 0.01));
+    using namespace rgb;
 
+    void FractalCreator::run(std::string name) {
         calculateIteration();
         calculateTotalIterations();
+        calculateRangeTotals();
         drawFractal();
-
         writeBitmap(name);
     }
 
@@ -44,7 +43,24 @@ namespace bitmap {
             m_total += m_histogram[i];
     }
 
+    void FractalCreator::calculateRangeTotals() {
+        int rangeIndex = 0;
+
+        for(int i = 0; i < Mandelbrot::MAX_ITERATIONS; ++i) {
+            int pixels = m_histogram[i];
+
+            if(i >= m_ranges[rangeIndex+1])
+                rangeIndex++;
+
+            m_rangeTotals[rangeIndex] += pixels;
+        }
+    }
+
     void FractalCreator::drawFractal() {
+        RGB startColor(0, 0, 20);
+        RGB endColor(255, 128, 74);
+        RGB colorDiff = endColor - startColor;
+
         for(int y = 0; y < m_height; ++y) {
             for(int x = 0; x < m_width; ++x) {
                 uint8_t red = 0;
@@ -59,12 +75,24 @@ namespace bitmap {
                         hue += ((double)m_histogram[i]) / m_total;
                     }
 
-                    green = hue * 255;
+                    red = startColor.r + colorDiff.r * hue;
+                    green = startColor.g + colorDiff.g * hue;
+                    blue = startColor.b + colorDiff.b * hue;
                 }
 
                 m_bmp.setPixel(x, y, red, green, blue);
             }
         }
+    }
+
+    void FractalCreator::addRange(double rangeEnd, const RGB& rgb) {
+        m_ranges.push_back(rangeEnd * Mandelbrot::MAX_ITERATIONS);
+        m_colors.push_back(rgb);
+
+        if(m_bGotFirstRange)
+            m_rangeTotals.push_back(0);
+
+        m_bGotFirstRange = true;
     }
 
     void FractalCreator::addZoom(const Zoom& zoom) {
