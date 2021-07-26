@@ -2,6 +2,17 @@
 
 namespace bitmap {
 
+    void FractalCreator::run(std::string name) {
+        addZoom(Zoom(295, m_height - 202, 0.1));
+        addZoom(Zoom(312, m_height - 304, 0.01));
+
+        calculateIteration();
+        calculateTotalIterations();
+        drawFractal();
+
+        writeBitmap(name);
+    }
+
     FractalCreator::FractalCreator(int width, int height): 
         m_width(width), 
         m_height(height),

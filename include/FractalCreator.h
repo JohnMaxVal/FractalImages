@@ -7,10 +7,10 @@
 #include "Bitmap.h"
 #include "Mandelbrot.h"
 #include "ZoomList.h"
+#include "RGB.h"
 
 namespace bitmap {
 
-    using namespace bitmap;
     using namespace mandelbrot;
     using namespace zoom;
 
@@ -24,8 +24,10 @@ namespace bitmap {
             ZoomList m_zoomList;
             int m_total{0};
         public:
-            FractalCreator(int width, int height);
+            FractalCreator(int widht, int height);
+            void run(std::string name);
 
+        private:
             void calculateIteration();
             void calculateTotalIterations();
             void drawFractal();
