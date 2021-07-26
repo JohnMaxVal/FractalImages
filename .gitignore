@@ -33,3 +33,6 @@
 
 # VS Code Configurations
 .vscode
+
+# Image formats
+*.bmp
