@@ -1,4 +1,5 @@
 #include <iostream>
+#include <math.h>
 #include "Bitmap.h"
 #include "Mandelbrot.h"
 
@@ -29,25 +30,27 @@ int main() {
     }
 
     int total = 0;
-    for(int i = 0; i < Mandelbrot::MAX_ITERATIONS; ++i) {
+    for(int i = 0; i < Mandelbrot::MAX_ITERATIONS; ++i)
         total += histogram[i];
-    }
 
      for(int y = 0; y < HEIGHT; ++y) {
         for(int x = 0; x < WIDTH; ++x) {
-            int iterations = fractal[y * WIDTH + x];
-
-            double hue = 0.0;
-            for(int i = 0; i <= iterations; ++i) {
-                hue += ((double)histogram[i]) / total;
-            }
-
             uint8_t red = 0;
-            uint8_t green = hue * 255;
+            uint8_t green = 0;
             uint8_t blue = 0;
 
-            bmp.setPixel(x, y, red, green, blue);
+            int iterations = fractal[y * WIDTH + x];
 
+            if(iterations != Mandelbrot::MAX_ITERATIONS) {
+                double hue = 0.0;
+                for(int i = 0; i <= iterations; ++i) {
+                    hue += ((double)histogram[i]) / total;
+                }
+
+                green = std::pow(255, hue);
+            }
+
+            bmp.setPixel(x, y, red, green, blue);
         }
      }
 
