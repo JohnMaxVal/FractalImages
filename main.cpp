@@ -2,9 +2,11 @@
 #include <math.h>
 #include "Bitmap.h"
 #include "Mandelbrot.h"
+#include "ZoomList.h"
 
 using namespace bitmap;
 using namespace mandelbrot;
+using namespace zoom;
 
 static const int WIDTH = 800;
 static const int HEIGHT = 600;
